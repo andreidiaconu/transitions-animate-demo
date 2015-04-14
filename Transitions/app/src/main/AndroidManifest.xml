@@ -32,6 +32,17 @@
         </activity>
         <activity  android:name=".stage2.DetailsActivity2" />
 
+        <activity
+            android:name=".stage3.GridActivity3"
+            android:label="Cats Stage 3"
+            >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity  android:name=".stage3.DetailsActivity3" android:theme="@style/AppTheme.Transparent" />
+
     </application>
 
 </manifest>
