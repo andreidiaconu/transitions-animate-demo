@@ -68,6 +68,8 @@ public class DetailsActivity4 extends Activity {
     public void actuallyRunAnimations(){ // :)
         ImageView imageView = (ImageView) findViewById(R.id.image);
         View background = findViewById(R.id.background);
+        View actionbar = findViewById(R.id.action_bar);
+        View tools = findViewById(R.id.tools);
 
         //Use the position and size from previous screen and set it to the image on this screen.
         Rect initialPosition = getIntent().getParcelableExtra("initialPosition");
@@ -81,7 +83,11 @@ public class DetailsActivity4 extends Activity {
         imageView.setTranslationY(initialPosition.centerY() - endPosition.centerY());
         imageView.setTranslationX(initialPosition.centerX() - endPosition.centerX());
 
+        //Made 0.1 so it can be seen during the workshop
         background.setScaleY(0.1f);
         background.setScaleX(0.1f);
+
+        tools.setTranslationY(tools.getMeasuredHeight());
+        actionbar.setTranslationY(-actionbar.getMeasuredHeight());
     }
 }
