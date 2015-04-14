@@ -3,7 +3,6 @@ package com.andreidiaconu.transitions.stage2;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +33,7 @@ public class DetailsActivity2 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_2);
+        setContentView(R.layout.activity_details_red);
         ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 2");
 
         ImageView imageView = (ImageView) findViewById(R.id.image);

@@ -1,4 +1,4 @@
-package com.andreidiaconu.transitions.stage3;
+package com.andreidiaconu.transitions.stage4;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -17,10 +18,10 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by andrei on 4/14/2015.
  */
-public class DetailsActivity3 extends Activity {
+public class DetailsActivity4 extends Activity {
 
     public static void start(Context from, String imageUrl, View initialView){
-        Intent intent = new Intent(from, DetailsActivity3.class);
+        Intent intent = new Intent(from, DetailsActivity4.class);
         intent.putExtra("imageUrl", imageUrl);
 
         //Send the initial position as an intent parameter. A Rect contains x, y, width, height.
@@ -35,7 +36,7 @@ public class DetailsActivity3 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_red);
-        ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 3");
+        ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 4");
 
         ImageView imageView = (ImageView) findViewById(R.id.image);
         String imageUrl = getIntent().getStringExtra("imageUrl");
@@ -51,6 +52,20 @@ public class DetailsActivity3 extends Activity {
     }
 
     public void runAnimations(){
+        final ImageView imageView = (ImageView) findViewById(R.id.image);
+
+        //We want the view to be measured before we go on with calculating the animation
+        imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                actuallyRunAnimations();
+                imageView.getViewTreeObserver().removeOnPreDrawListener(this);
+                return false;
+            }
+        });
+    }
+
+    public void actuallyRunAnimations(){ // :)
         ImageView imageView = (ImageView) findViewById(R.id.image);
 
         //Use the position and size from previous screen and set it to the image on this screen.
@@ -63,7 +78,6 @@ public class DetailsActivity3 extends Activity {
         layoutParams.topMargin = initialPosition.top;
         layoutParams.leftMargin = initialPosition.left;
         imageView.setLayoutParams(layoutParams);
-
 
         //Not pretty, but good enough for making a point.
         findViewById(R.id.background).setBackgroundColor(Color.TRANSPARENT);

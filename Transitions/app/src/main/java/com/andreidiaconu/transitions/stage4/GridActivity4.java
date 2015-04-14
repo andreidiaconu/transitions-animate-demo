@@ -1,4 +1,4 @@
-package com.andreidiaconu.transitions.stage3;
+package com.andreidiaconu.transitions.stage4;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,13 +18,13 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by andrei on 4/14/2015.
  */
-public class GridActivity3 extends Activity {
+public class GridActivity4 extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
-        ((Toolbar) findViewById(R.id.action_bar)).setTitle("Grid - Stage 3");
+        ((Toolbar) findViewById(R.id.action_bar)).setTitle("Grid - Stage 4");
 
         GridView grid = (GridView) findViewById(R.id.grid);
         String[] data = getResources().getStringArray(R.array.cats_array);
@@ -35,7 +35,7 @@ public class GridActivity3 extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String imageUrl = ((ImagesAdapter)parent.getAdapter()).getItem(position);
-                DetailsActivity3.start(GridActivity3.this, imageUrl, view);
+                DetailsActivity4.start(GridActivity4.this, imageUrl, view);
             }
         });
     }

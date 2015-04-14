@@ -43,6 +43,17 @@
         </activity>
         <activity  android:name=".stage3.DetailsActivity3" android:theme="@style/AppTheme.Transparent" />
 
+        <activity
+            android:name=".stage4.GridActivity4"
+            android:label="Cats Stage 4"
+            >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity  android:name=".stage4.DetailsActivity4" android:theme="@style/AppTheme.Transparent" />
+
     </application>
 
 </manifest>

@@ -24,7 +24,7 @@ public class DetailsActivity1 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_1);
+        setContentView(R.layout.activity_details);
         ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 1");
 
         ImageView imageView = (ImageView) findViewById(R.id.image);

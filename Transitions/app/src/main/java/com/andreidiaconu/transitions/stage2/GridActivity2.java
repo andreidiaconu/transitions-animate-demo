@@ -23,7 +23,7 @@ public class GridActivity2 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grid_1);
+        setContentView(R.layout.activity_grid);
         ((Toolbar) findViewById(R.id.action_bar)).setTitle("Grid - Stage 2");
 
         GridView grid = (GridView) findViewById(R.id.grid);
@@ -48,7 +48,7 @@ public class GridActivity2 extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null)
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_grid_image_1, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_grid_image, parent, false);
 
             ImageView v = (ImageView) convertView;
 
