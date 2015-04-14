@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Replace this with images from the interwebs and
+    try to tackle problems that appear during animations-->
+    <string-array name="cats_array">
+        <item>file:///android_asset/cats/cat1.jpg</item>
+        <item>file:///android_asset/cats/cat2.jpg</item>
+        <item>file:///android_asset/cats/cat3.jpg</item>
+        <item>file:///android_asset/cats/cat4.jpg</item>
+        <item>file:///android_asset/cats/cat5.jpg</item>
+        <item>file:///android_asset/cats/cat1.jpg</item>
+        <item>file:///android_asset/cats/cat2.jpg</item>
+        <item>file:///android_asset/cats/cat3.jpg</item>
+        <item>file:///android_asset/cats/cat4.jpg</item>
+        <item>file:///android_asset/cats/cat5.jpg</item>
+        <item>file:///android_asset/cats/cat1.jpg</item>
+        <item>file:///android_asset/cats/cat2.jpg</item>
+        <item>file:///android_asset/cats/cat3.jpg</item>
+        <item>file:///android_asset/cats/cat4.jpg</item>
+        <item>file:///android_asset/cats/cat5.jpg</item>
+    </string-array>
+</resources>
