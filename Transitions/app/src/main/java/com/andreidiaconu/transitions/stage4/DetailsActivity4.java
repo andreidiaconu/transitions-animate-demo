@@ -35,7 +35,7 @@ public class DetailsActivity4 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_red);
+        setContentView(R.layout.activity_details_wrap);
         ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 4");
 
         ImageView imageView = (ImageView) findViewById(R.id.image);
@@ -67,25 +67,21 @@ public class DetailsActivity4 extends Activity {
 
     public void actuallyRunAnimations(){ // :)
         ImageView imageView = (ImageView) findViewById(R.id.image);
+        View background = findViewById(R.id.background);
 
         //Use the position and size from previous screen and set it to the image on this screen.
         Rect initialPosition = getIntent().getParcelableExtra("initialPosition");
+        Rect endPosition = new Rect();
 
-        //Don't know what the size of the image will be yet, so i'll just set it's size instead of scaling.
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
-        layoutParams.width = initialPosition.width();
-        layoutParams.height = initialPosition.height();
-        layoutParams.topMargin = initialPosition.top;
-        layoutParams.leftMargin = initialPosition.left;
-        imageView.setLayoutParams(layoutParams);
+        imageView.getGlobalVisibleRect(endPosition);
 
-        //Not pretty, but good enough for making a point.
-        findViewById(R.id.background).setBackgroundColor(Color.TRANSPARENT);
-        imageView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.background).setBackgroundColor(getResources().getColor(R.color.details_background));
-            }
-        }, 3000);
+        //Set initial size and position using scale and translate
+        imageView.setScaleY((float) initialPosition.height() / endPosition.height());
+        imageView.setScaleX((float) initialPosition.width() / endPosition.width());
+        imageView.setTranslationY(initialPosition.centerY() - endPosition.centerY());
+        imageView.setTranslationX(initialPosition.centerX() - endPosition.centerX());
+
+        background.setScaleY(0.1f);
+        background.setScaleX(0.1f);
     }
 }
