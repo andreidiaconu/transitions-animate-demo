@@ -45,6 +45,16 @@ public class DetailsActivity3 extends Activity {
                 .load(imageUrl)
                 .into(imageView);
 
+        if (savedInstanceState==null){
+            runAnimations();
+        }else{
+            setBlackBackground();
+        }
+    }
+
+    public void runAnimations(){
+        ImageView imageView = (ImageView) findViewById(R.id.image);
+
         //Use the position and size from previous screen and set it to the image on this screen.
         Rect initialPosition = getIntent().getParcelableExtra("initialPosition");
 
@@ -56,11 +66,16 @@ public class DetailsActivity3 extends Activity {
         layoutParams.leftMargin = initialPosition.left;
         imageView.setLayoutParams(layoutParams);
 
+        //Not pretty, but good enough for making a point.
         imageView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                findViewById(R.id.background).setBackgroundColor(Color.BLACK);
+                setBlackBackground();
             }
         }, 3000);
+    }
+
+    public void setBlackBackground(){
+        findViewById(R.id.background).setBackgroundColor(Color.BLACK);
     }
 }
