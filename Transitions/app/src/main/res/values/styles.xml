@@ -12,4 +12,7 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
+    <!--This theme is overriden in values-v21-->
+    <style name="AppTheme.Transitions"/>
+
 </resources>
