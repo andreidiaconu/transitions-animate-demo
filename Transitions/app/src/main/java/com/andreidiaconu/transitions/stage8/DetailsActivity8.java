@@ -42,7 +42,7 @@ public class DetailsActivity8 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_wrap);
-        ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 7");
+        ((Toolbar) findViewById(R.id.action_bar)).setTitle("Details - Stage 8");
 
         ImageView imageView = (ImageView) findViewById(R.id.image);
         String imageUrl = getIntent().getStringExtra("imageUrl");
