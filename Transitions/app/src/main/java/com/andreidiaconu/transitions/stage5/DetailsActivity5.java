@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
  */
 public class DetailsActivity5 extends Activity {
 
-    public static void start(Context from, String imageUrl, View initialView){
+    public static void start(Activity from, String imageUrl, View initialView){
         Intent intent = new Intent(from, DetailsActivity5.class);
         intent.putExtra("imageUrl", imageUrl);
 
@@ -30,6 +30,7 @@ public class DetailsActivity5 extends Activity {
         intent.putExtra("initialPosition", initialPosition);
 
         from.startActivity(intent);
+        from.overridePendingTransition(0,0);
     }
 
     @Override

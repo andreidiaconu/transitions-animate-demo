@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
  */
 public class DetailsActivity4 extends Activity {
 
-    public static void start(Context from, String imageUrl, View initialView){
+    public static void start(Activity from, String imageUrl, View initialView){
         Intent intent = new Intent(from, DetailsActivity4.class);
         intent.putExtra("imageUrl", imageUrl);
 
@@ -30,6 +30,7 @@ public class DetailsActivity4 extends Activity {
         intent.putExtra("initialPosition", initialPosition);
 
         from.startActivity(intent);
+        from.overridePendingTransition(0,0);
     }
 
     @Override
@@ -84,8 +85,7 @@ public class DetailsActivity4 extends Activity {
         imageView.setTranslationX(initialPosition.centerX() - endPosition.centerX());
 
         //Made 0.1 so it can be seen during the workshop
-        background.setScaleY(0.1f);
-        background.setScaleX(0.1f);
+        background.setAlpha(0.5f);
 
         tools.setTranslationY(tools.getMeasuredHeight());
         actionbar.setTranslationY(-actionbar.getMeasuredHeight());
