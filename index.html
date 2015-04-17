@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Screen transitions in Android</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Andrei Diaconu">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">        
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<style type="text/css">
+		.reveal section img {
+			background: transparent;
+			border: 0;
+		}
+		</style>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Screen transitions in Android</h1>
+					<h3>Go from <u>A</u> to <u>B</u> in style</h3>
+					<p>
+						<small>Created by <a href="http://andreidiaconu.com">Andrei Diaconu</a> from <a href="https://www.facebook.com/groups/androidiasi/">Android Iasi</a></small>
+					</p>
+				</section>
+
+				<section>
+					<section>
+						<h2>What is a screen transition?</h2>	
+						<img src="media/SceneTransition.png" alt="" class="fragment">
+					</section>
+					<section data-background-video="media/ContactsAnim.mp4,media/ContactsAnim.webm,media/ContactsAnim.ogv">
+					</section>
+					<section data-background-video="media/ContactsAnim.mp4,media/ContactsAnim.webm,media/ContactsAnim.ogv">
+					</section>
+				</section>
+
+				<section>
+					<h2>What are we doing today?</h2>
+                    <p class="fragment">8 Stages</p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Stage 1 - default animation</h2>
+					</section>
+					<section>
+                        <h3>Initial setup</h3>
+						<h4>Activity A</h4>
+						<pre><code data-trim>
+grid.setOnItemClickListener(
+	DetailsActivity1.start(GridActivity1.this, imageUrl);
+)
+						</code></pre>
+						<h4>Activity B</h4>
+						<pre><code data-trim>
+static void start(...,String imageUrl){
+    intent = new Intent(...);
+}
+    
+void onCreate(){
+    Picasso
+    	.with(this)
+    	.load(imageUrl)
+    	.into(imageView);
+}
+
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Stage 2 - Measuring</h2>
+						<ul>
+							<li>Measure view in A</li>
+							<li>Send position to B</li>
+							<li>Resize the image in B</li>
+						</ul>
+					</section>
+					<section>
+                        <h3>Send position</h3>
+						<h4>Activity A</h4>
+						<pre><code data-trim class="java">
+void onItemClick(){
+    DetailsActivity2.start(GridActivity2.this, imageUrl, view);
+}
+						</code></pre>
+						<h4>Activity B</h4>
+						<pre><code data-trim class="java">
+
+static void start(..., View initialView){
+    ...
+    
+    initialView.getGlobalVisibleRect(initialPosition);
+    intent.putExtra("initialPosition", initialPosition);
+
+    startActivity(intent);
+}
+
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Stage 3 - No defaults</h2>
+						<ul>
+							<li>Make B transparent</li>
+							<li>No default animations</li>
+							<li>Plan the animation</li>
+						</ul>
+					</section>
+					<section>
+                        <h3>Remove defaults</h3>
+						<h4>styles.xml</h4>
+                        <pre><code data-trim class="xml">
+
+<style name="AppTheme.Transparent"/>
+  <item name="android:windowBackground">rtransparent</item>
+  <item name="android:windowIsTranslucent">true</item>
+</style>
+
+                        </code></pre>
+                        <h4>Starting Activity</h4>
+                        <pre><code data-trim>
+
+from.overridePendingTransition(0,0);
+
+                        </code></pre>
+					</section>
+					<section>
+						<h3>Run only once</h3>
+						<pre><code data-trim class="java">
+void onCreate() {
+    if (savedInstanceState==null){
+        runAnimations();
+    }	
+}
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+                    <section>
+    					<h2>Stage 4 - Start position</h2>
+    					<ul>
+    						<li>Use translate and scale</li>
+    						<li>Initial position for all views</li>
+    					</ul>
+                    </section>
+                    <section>
+                        <h3>Wait for measurements</h3>
+                        <pre><code data-trim class="java">
+runAnimations(){
+    imageView
+        .getViewTreeObserver()
+        .addOnPreDrawListener(
+            boolean onPreDraw() {
+                actuallyRunAnimations();
+                removeOnPreDrawListener(this);
+                return false;
+            });
+}
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Set initial position</h3>
+                        <pre><code data-trim class="java">
+void actuallyRunAnimations(){
+    Rect initialPosition = getIntent().getParcelableExtra(...);
+    imageView.getGlobalVisibleRect(endPosition);
+
+    //use initialPosition, endPosition
+    imageView.setScaleY(...);
+    imageView.setScaleX(...);
+    imageView.setTranslationY(...);
+    imageView.setTranslationX(...);
+}
+                        </code></pre>
+                    </section>
+				</section>
+
+				<section>
+                    <section>
+					<h2>Stage 5 - Animate!</h2>
+    					<ul>
+    						<li>Animate image to final position</li>
+    						<li>Fade background in</li>
+    						<li>Bring other views from the sides</li>
+    					</ul>
+                    </section>
+                    <section>
+                        <h3>Animate things back to normal</h3>
+                        <pre><code data-trim class="java">
+imageView.animate()
+        .scaleX(1)
+        .scaleY(1)
+        .translationX(0)
+        .translationY(0)
+        .setListener(
+            void onAnimationEnd() {
+                actionbar.animate()
+                        .translationY(0)
+                        .start();
+            }
+        ).start();
+                        </code></pre>
+                    </section>
+				</section>
+
+				<section>
+                    <section>
+    					<h2>Stage 6 - Reverse</h2>
+    					<ul>
+    						<li>Override closing B</li>
+    						<li>Animate everyhitng in reverse</li>
+    						<li>Close B when on animation end</li>
+    					</ul>
+                    </section>
+                    <section>
+                        <h3>Prevent finish()</h3>
+                        <pre><code data-trim class="java">
+@Override
+public void finish() {
+    if (canAnimateBack)
+        runAnimationsBackwards();
+    else
+        super.finish();
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Delay finish()</h3>
+                        <pre><code data-trim class="java">
+imageView.animate()
+    .scaleX(...)
+    .scaleY(...)
+    .translationX(...)
+    .translationY(...)
+    .setListener(
+        void onAnimationEnd() {
+            DetailsActivity6.super.finish();
+            overridePendingTransition(0, 0);
+        }
+    ).start();
+                        </code></pre>
+                    </section>
+				</section>
+
+				<section>
+                    <section>
+    					<h2>Stage 7 - Lollipop</h2>
+    					<ul>
+    						<li>Drop everything</li>
+    						<li>Android 5 Screen Transitions</li>
+    						<li>Define shared elements</li>
+    					</ul>
+                    </section>
+                    <section>
+                        <h3>styles.xml</h3>
+                        <pre><code data-trim>
+<style name="AppTheme.Transitions"/>
+    <item name = "windowActivityTransitions" >true</item>
+</style>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Layout B</h3>
+                        <pre><code data-trim class="xml">
+&lt;ImageView
+    ...
+    android:transitionName="shared_image"
+    />
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Intent bundle</h3>
+                        <pre><code data-trim class="java">
+ActivityOptionsCompat
+    .makeSceneTransitionAnimation(from, initialView, "shared_image")
+    .toBundle();
+                        </code></pre>
+                    </section>
+				</section>
+
+				<section>
+                    <section>
+    					<h2>Stage 8 - Magic</h2>
+    					<ul>
+    						<li>Content <u>exit</u> transition for <u>A</u></li>
+    						<li>Content <u>enter</u> transition for <u>B</u></li>
+    						<li>Detaults for <u>exiting B</u> and <u>reentering A</u></li>
+    					</ul>
+                    </section>
+                    <section>
+                        <h3>Exit + Enter <u>Content</u> transitions</h3>
+                        <h4>Activty A</h4>
+                        <pre><code data-trim>
+getWindow().setExitTransition(new Explode());
+                        </code></pre>
+                        <h4>Activty B</h4>
+                        <pre><code data-trim>
+getWindow().setEnterTransition(new Slide());
+                        </code></pre>
+                    </section>
+				</section>
+                <section>
+                    <h2>Code on Github</h2>
+                    <p><a href="https://github.com/andreidiaconu/transitions-animate-demo">https://github.com/andreidiaconu/transitions-animate-demo</a></p>
+                </section>
+                <section>
+                    <h2>Thank you!</h2>
+                    <h4>Questions?</h4>
+                    <img src="media/diaconu.jpg" alt="" width=300>
+                    <img src="media/android_iasi_logo.jpg" alt="" width=300 style="margin:100px">
+                    <p>
+                        <small>by <a href="http://andreidiaconu.com">Andrei Diaconu</a> from <a href="https://www.facebook.com/groups/androidiasi/">Android Iasi</a></small>
+                    </p>
+                    <p><a href="https://github.com/andreidiaconu/transitions-animate-demo">https://github.com/andreidiaconu/transitions-animate-demo</a></p>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
