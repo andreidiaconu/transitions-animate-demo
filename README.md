@@ -14,4 +14,7 @@ This presentation (with working video) can be viewed at https://andreidiaconu.gi
 ## Source code for the demo
 You can find the sources for the demo app on the master branch at https://github.com/andreidiaconu/transitions-animate-demo
 
+### Other info
+This was part of [CodeCamp Iasi](http://iasi.codecamp.ro/) on April 25th 2015 - Thank you to all that attended.
+
 This is under MIT license.
